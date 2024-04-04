@@ -10,6 +10,7 @@ import {
   removeTask,
   toggleTask,
 } from 'src/app/store/actions/task.actions';
+import { selectAllTasks } from 'src/app/store/selectors/task.selector';
 
 @Component({
   selector: 'app-task-list',
@@ -28,7 +29,7 @@ import {
       </form>
 
       <ul class="task-list">
-        @for(task of (tasks$ | async)?.tasks; track task.id) {
+        @for(task of tasks$ | async; track task.id) {
         <li>
           <input
             type="checkbox"
@@ -50,14 +51,14 @@ import {
   styleUrl: './task-list.component.scss',
 })
 export class TaskListComponent implements OnInit {
-  tasks$: Observable<{ tasks: Task[] }> | undefined;
+  tasks$: Observable<Task[]> | undefined;
   newTaskTitle: string = '';
 
   constructor(private store: Store<{ tasks: { tasks: Task[] } }>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(loadAllTask({ tasks: [] }));
-    this.tasks$ = this.store.select('tasks');
+    this.store.dispatch(loadAllTask());
+    this.tasks$ = this.store.select(selectAllTasks);
     this.store.select('tasks').subscribe((tasksState: { tasks: Task[] }) => {
       console.log(tasksState.tasks);
     });

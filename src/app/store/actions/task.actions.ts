@@ -16,7 +16,12 @@ export const removeTask = createAction(
   props<{ id: string }>()
 );
 
-export const loadAllTask = createAction(
-  '[Tasks] Load All Tasks',
+export const loadAllTask = createAction('[Tasks] Load All Tasks');
+export const loadAllTaskSuccess = createAction(
+  '[Tasks] Load All Tasks Success',
   props<{ tasks: Task[] }>()
+);
+export const loadAllTaskFailure = createAction(
+  '[Tasks] Load All Tasks Failure',
+  props<{ error: string }>()
 );
