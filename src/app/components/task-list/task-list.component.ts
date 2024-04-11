@@ -33,12 +33,12 @@ import {
           <input
             type="checkbox"
             [checked]="task.completed"
-            (change)="toggleTask(task.id)"
+            (change)="toggleTask(task.id!)"
           />
           <span [ngClass]="{ completed: task.completed }">{{
             task.title
           }}</span>
-          <button (click)="removeTask(task.id)" class="remove-button">
+          <button (click)="removeTask(task.id!)" class="remove-button">
             Delete
           </button>
         </li>
@@ -57,6 +57,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadAllTask({ tasks: [] }));
+    console.log(this.tasks$?.subscribe.toString)
     this.tasks$ = this.store.select('tasks');
     this.store.select('tasks').subscribe((tasksState: { tasks: Task[] }) => {
       console.log(tasksState.tasks);
@@ -68,20 +69,21 @@ export class TaskListComponent implements OnInit {
       return;
     }
     const task: Task = {
-      id: Date.now().toString(),
       title: this.newTaskTitle,
       completed: false,
       userId: 1,
     };
 
     this.store.dispatch(addTask({ task: task }));
+    console.log(task);
+    
   }
 
-  toggleTask(id: string): void {
+  toggleTask(id: number): void {
     this.store.dispatch(toggleTask({ id }));
   }
 
-  removeTask(id: string): void {
+  removeTask(id: number): void {
     this.store.dispatch(removeTask({ id }));
   }
 }

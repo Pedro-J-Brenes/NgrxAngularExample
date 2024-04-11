@@ -8,12 +8,12 @@ export const addTask = createAction(
 
 export const toggleTask = createAction(
   '[Tasks] Toggle Task',
-  props<{ id: string }>()
+  props<{ id: number }>()
 );
 
 export const removeTask = createAction(
   '[Tasks] Remove Task',
-  props<{ id: string }>()
+  props<{id: number}>()
 );
 
 export const loadAllTask = createAction(

@@ -14,7 +14,7 @@ export interface TasksState {
 export const initialSate: TasksState = {
   tasks: [
     {
-      id: '1',
+      id: 1,
       title: 'Laundry',
       completed: false,
       userId: 1,

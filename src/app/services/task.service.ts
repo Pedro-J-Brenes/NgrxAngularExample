@@ -7,11 +7,20 @@ import { Task } from '../models/task.model';
   providedIn: 'root',
 })
 export class TaskService {
-  private apiUrl: string = 'https://jsonplaceholder.typicode.com/todos';
+  private apiUrl: string = '/api/task';
 
   constructor(private http: HttpClient) {}
 
   getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+    return this.http.get<Task[]>(`${this.apiUrl}/tasks`);
+  }
+
+  saveUpdateTask(task: Task): Observable<Task> {
+    return this.http.post<Task>(`${this.apiUrl}/save`,task)
+  }
+
+  deleteTask(id: number): Observable<Task> {
+    console.log("Entra en delete")
+    return this.http.delete<Task>(`${this.apiUrl}/delete?=${id}`);
   }
 }

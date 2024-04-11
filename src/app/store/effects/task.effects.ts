@@ -19,4 +19,23 @@ export class TaskEffects {
       )
     )
   );
+  addTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskActions.addTask),
+      exhaustMap((tasks) =>
+        this.taskService
+          .saveUpdateTask(tasks.task)
+          .pipe(map((task: Task) => TaskActions.addTask({ task })))
+      )
+    ));
+    
+    removeTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TaskActions.removeTask),
+      exhaustMap((task) =>
+        this.taskService
+          .deleteTask(task.id)
+          .pipe(map((task: Task) => TaskActions.removeTask({id:task.id!})))
+      )
+    ));
 }
