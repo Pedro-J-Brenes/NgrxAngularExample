@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Task } from 'src/app/models/task.model';
+import { TaskService } from 'src/app/services/task.service';
 import {
   addTask,
   loadAllTask,
@@ -33,12 +34,12 @@ import {
           <input
             type="checkbox"
             [checked]="task.completed"
-            (change)="toggleTask(task.id!)"
+            (change)="toggleTask(task.id)"
           />
           <span [ngClass]="{ completed: task.completed }">{{
             task.title
           }}</span>
-          <button (click)="removeTask(task.id!)" class="remove-button">
+          <button (click)="removeTask(task.id)" class="remove-button">
             Delete
           </button>
         </li>
@@ -53,22 +54,25 @@ export class TaskListComponent implements OnInit {
   tasks$: Observable<{ tasks: Task[] }> | undefined;
   newTaskTitle: string = '';
 
-  constructor(private store: Store<{ tasks: { tasks: Task[] } }>) {}
+  constructor(private store: Store<{ tasks: { tasks: Task[] } }>, private service:TaskService) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadAllTask({ tasks: [] }));
-    console.log(this.tasks$?.subscribe.toString)
     this.tasks$ = this.store.select('tasks');
-    this.store.select('tasks').subscribe((tasksState: { tasks: Task[] }) => {
-      console.log(tasksState.tasks);
-    });
+   this.store.select('tasks').subscribe();
   }
 
   addTask(): void {
     if (this.newTaskTitle.trim() === '') {
       return;
     }
+    let id: number = 0;
+    this.tasks$?.subscribe(t=> id = t.tasks.length
+    );
+  
+    
     const task: Task = {
+      id:id,
       title: this.newTaskTitle,
       completed: false,
       userId: 1,

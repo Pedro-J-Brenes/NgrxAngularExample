@@ -34,7 +34,7 @@ export class TaskEffects {
       ofType(TaskActions.removeTask),
       exhaustMap((task) =>
         this.taskService
-          .deleteTask(task.id)
+          .removeTasks(task.id)
           .pipe(map((task: Task) => TaskActions.removeTask({id:task.id!})))
       )
     ));
