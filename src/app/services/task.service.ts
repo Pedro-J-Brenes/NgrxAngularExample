@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { Task } from '../models/task.model';
+import { Task, TaskDTO } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,10 +16,15 @@ export class TaskService {
   }
 
   saveUpdateTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(`${this.apiUrl}/save`,task);
+    const taskDto : TaskDTO = {
+      title:task.title,
+      completed: task.completed,
+      userId: task.userId
+    }
+    return this.http.post<Task>(`${this.apiUrl}/save`,taskDto);
   }
 
   removeTasks(id: number): Observable<Task> {
-    return this.http.delete<Task>(`${this.apiUrl}/delete=?${id}`);
+    return this.http.delete<Task>(`${this.apiUrl}/delete?id=${id}`);
   }
 }

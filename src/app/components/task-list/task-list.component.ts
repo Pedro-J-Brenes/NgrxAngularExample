@@ -67,20 +67,15 @@ export class TaskListComponent implements OnInit {
       return;
     }
     let id: number = 0;
-    this.tasks$?.subscribe(t=> id = t.tasks.length
-    );
-  
-    
+    this.tasks$?.subscribe(t=> id = t.tasks.length);
+   
     const task: Task = {
       id:id,
       title: this.newTaskTitle,
       completed: false,
       userId: 1,
     };
-
-    this.store.dispatch(addTask({ task: task }));
-    console.log(task);
-    
+    this.store.dispatch(addTask({ task: task }));    
   }
 
   toggleTask(id: number): void {
