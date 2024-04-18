@@ -20,7 +20,7 @@ import { TaskListComponent } from './components/task-list/task-list.component';
     AppRoutingModule,
     StoreModule.forRoot({ tasks: TasksReducer }),
     EffectsModule.forRoot([TaskEffects]),
-    StoreDevtoolsModule.instrument({}),
+    StoreDevtoolsModule.instrument(),
   ],
   providers: [],
   bootstrap: [AppComponent],

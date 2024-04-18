@@ -8,3 +8,9 @@ export interface TaskDTO {
   completed: boolean;
   userId: number;
 }
+
+export interface TaskModel {
+  list: Task[],
+  taskObject: Task,
+  errormessage: string;
+}
