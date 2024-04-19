@@ -8,7 +8,7 @@ import { catchError, exhaustMap, map, of } from 'rxjs';
 export class TaskEffects {
   constructor(private actions$: Actions, private taskService: TaskService) {}
  
-  _loadalltasks= createEffect(()=>
+  _loadtasks= createEffect(()=>
   this.actions$.pipe(
     ofType(TaskActions.loadtask),
     exhaustMap((action)=>{
@@ -20,33 +20,30 @@ export class TaskEffects {
       )
     })
   ))
-  // loadAlltasks$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(TaskActions.),
-  //     exhaustMap(() =>
-  //       this.taskService
-  //         .getTasks()
-  //         .pipe(map((tasks: Task[]) => TaskActions.loadAllTask({ tasks })))
-  //     )
-  //   )
-  // );
-  // addTask$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(TaskActions.addTask),
-  //     exhaustMap((tasks) =>
-  //       this.taskService
-  //         .saveUpdateTask(tasks.task)
-  //         .pipe(map((task: Task) => TaskActions.addTask({ task })))
-  //     )
-  //   ));
-    
-  //   removeTask$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(TaskActions.removeTask),
-  //     exhaustMap((task) =>
-  //       this.taskService
-  //         .removeTasks(task.id)
-  //         .pipe(map((task: Task) => TaskActions.removeTask({id:task.id!})))
-  //     )
-  //   ));
+
+  _addtask= createEffect(()=>
+    this.actions$.pipe(
+      ofType(TaskActions.addtask),
+      exhaustMap((action)=>{
+        return this.taskService.saveUpdateTask(action.inputdata).pipe(
+          map((data)=>{
+            return TaskActions.addtasksuccess({inputdata:data})
+          }),
+          catchError((_error)=> of(TaskActions.addtaskfail({errormessage: _error.message})))
+        )
+      })
+    ))
+ 
+  _deletetask= createEffect(()=>
+    this.actions$.pipe(
+      ofType(TaskActions.deletetask),
+      exhaustMap((action)=>{
+        return this.taskService.removeTasks(action.id).pipe(
+          map((data)=>{
+            return TaskActions.deletetasksuccess({id:data.id})
+          }),
+          catchError((_error)=> of(TaskActions.deletetaskfail({errormessage: _error.message})))
+        )
+      })
+    ))
 }

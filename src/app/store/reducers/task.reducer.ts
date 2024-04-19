@@ -1,25 +1,15 @@
 import { createReducer, on } from '@ngrx/store';
-import { Task } from 'src/app/models/task.model';
 import {
   loadtasksuccess,
-  loadtaskfail
+  loadtaskfail,
+  addtasksuccess,
+  addtaskfail,
+  toggleTask,
+  deletetasksuccess,
+  deletetaskfail
 } from '../actions/task.actions';
 import { TaskState } from '../state/task.state';
 
-// export interface TasksState {
-//   tasks: Task[];
-// }
-
-// export const initialSate: TasksState = {
-//   tasks: [
-//     {
-//       id: 1,
-//       title: 'Laundry',
-//       completed: false,
-//       userId: 1,
-//     },
-//   ],
-// };
 
 export const TasksReducer = createReducer(
   TaskState,
@@ -36,17 +26,45 @@ export const TasksReducer = createReducer(
       list:[],
       errormessage:action.errormessage
     }
-  })
+  }),
+  on(addtasksuccess,(state,action)=>{
+    return{
+      ...state,
+      list:[...state.list,action.inputdata],
+      errormessage:''
+    }
+  }),
+  on(addtaskfail,(state,action)=>{
+    return{
+      ...state,
+      list:[...state.list],
+      errormessage:action.errormessage
+    }
+  }),
+  on(deletetasksuccess,(state, action)=>{
+    return {
+      ...state,
+      list:[...state.list.filter(t=> t.id !== action.id),],
+      errormessage:''
+    }
+  }),
+  on(deletetaskfail,(state, action)=>{
+    return {
+      ...state,
+      list:[...state.list],
+      errormessage:action.errormessage
+    }
+  }),
   // initialSate,
   // on(addTask, (state, { task }) => ({
   //   tasks: [...state.tasks, task],
   // })),
-  // on(toggleTask, (state, { id }) => ({
-  //   ...state,
-  //   tasks: state.tasks.map((task) =>
-  //     task.id === id ? { ...task, completed: !task.completed } : task
-  //   ),
-  // })),
+  on(toggleTask, (state, { id }) => ({
+    ...state,
+    tasks: state.list.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    ),
+  })),
   // on(removeTask, (state, { id }) => ({
   //   ...state,
   //   tasks: state.tasks.filter((task) => task.id !== id),

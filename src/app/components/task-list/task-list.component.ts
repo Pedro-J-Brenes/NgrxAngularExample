@@ -1,17 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Task } from 'src/app/models/task.model';
-import { loadtask } from 'src/app/store/actions/task.actions';
+import { loadtask,addtask,toggleTask, deletetask } from 'src/app/store/actions/task.actions';
 import { gettasklist } from 'src/app/store/selector/task.selector';
-// import {
-//   addTask,
-//   loadAllTask,
-//   removeTask,
-//   toggleTask,
-// } from 'src/app/store/actions/task.actions';
+
 
 @Component({
   selector: 'app-task-list',
@@ -66,26 +61,28 @@ export class TaskListComponent implements OnInit {
   }
 
   addTask(): void {
-    // if (this.newTaskTitle.trim() === '') {
-    //   return;
-    // }
-    // let id: number = 0;
-    // this.tasks$?.subscribe(t=> id = t.tasks.length);
-   
-    // const task: Task = {
-    //   id:id,
-    //   title: this.newTaskTitle,
-    //   completed: false,
-    //   userId: 1,
-    // };
-    // this.store.dispatch(addTask({ task: task }));    
+    if (this.newTaskTitle.trim() === '') {
+      return;
+    }
+    const _id: number= 0;
+    this.tasks$?.subscribe(d=>_id==d.length);
+
+    const task: Task = {
+      id:_id,
+      title: this.newTaskTitle,
+      completed: false,
+      userId: 1,
+    };
+    this.store.dispatch(addtask({inputdata:task}));    
   }
 
   toggleTask(id: number): void {
-    // this.store.dispatch(toggleTask({ id }));
+    
+     this.store.dispatch(toggleTask({ id }));
   }
 
   removeTask(id: number): void {
-    // this.store.dispatch(removeTask({ id }));
+    this.store.dispatch(deletetask({ id }));
   }
+  
 }
