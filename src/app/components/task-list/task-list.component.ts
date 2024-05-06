@@ -67,7 +67,7 @@ export class TaskListComponent implements OnInit {
     const _id: number= 0;
     this.tasks$?.subscribe(d=>_id==d.length);
 
-    const task: Task = {
+    const task: Task = { 
       id:_id,
       title: this.newTaskTitle,
       completed: false,
